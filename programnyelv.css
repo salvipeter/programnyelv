@@ -1,0 +1,19 @@
+@import url(https://fonts.googleapis.com/css?family=Vollkorn:,b,i|Inconsolata);
+
+html {
+  margin: auto;
+  max-width: 50em;
+  background:#fefefe;
+  font: 1.2em Vollkorn, Ehrhardt, Bembo, Times, serif;
+  color: #333;
+  line-height: 1.3;
+  text-align: justify;
+}
+
+code {
+  font: 1em Inconsolata, "Terminus Bold", Monaco, Courier, monospace;
+}
+
+pre {
+  margin: 0 0 0 4em;
+}

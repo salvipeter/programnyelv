@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<head>
+<link rel='stylesheet' type='text/css' href='programnyelv.css' media='all'/>
+<meta http-equiv='Content-Type' content='text/html;charset=utf8'/>
+<title>Egy programnyelv felépítése</title>
+</head>
+<body>
+
+<h1>Egy programnyelv felépítése</h1>
+
+<p><em>Salvi Péter, 2018</em></p>
+
+<p>Ebben a dokumentumban egy egyszerű funkcionális programnyelv készítését mutatom be kombinatorikus logikai alapokon. Nem törekedtem matematikai precizitásra, csak a felépítés elvét akartam megmutatni; a bibliográfiában található könyvek jó kiindulási alapot adnak az érdeklődő olvasó számára.</p>
+
+<h1>Kombinátorok</h1>
+
+<p>Definiáljuk a <code>K</code> és <code>S</code> kombinátorokat:</p>
+
+<pre><code>Kab  = a
+Sabc = Sac(bc)
+</code></pre>
+
+<p>Itt a kis <code>a</code>, <code>b</code>, <code>c</code> stb. betűk tetszőleges kifejezéseket jelentenek. Ahol nincsen külön jelezve, ott a zárójelezés balról történik, tehát <code>abcd=((ab)c)d</code>. A fenti egyenlőségek értelme az, hogy a két oldalon található kifejezések felcserélhetőek.</p>
+
+<h2>Hasznos kombinátorok</h2>
+
+<p>Elsőként nézzük meg, mire egyszerűsíthető az <code>SKKa</code> kifejezés!</p>
+
+<pre><code>SKab = Kb(ab)
+     = b
+</code></pre>
+
+<p>Ez az identitás kombinátor, amire a továbbiakban az <code>I:=SKK</code> jelölést fogjuk használni, tehát <code>Ia=a</code>.</p>
+
+<p>Egy másik fontos, ún. <em>kompozíciós</em> kombinátor a <code>B:=S(KS)K</code>:</p>
+
+<pre><code>Babc = S(KS)Kabc
+     = KSa(Ka)bc
+     = S(Ka)bc
+     = Kac(bc)
+     = a(bc)
+</code></pre>
+
+<p>Szintén hasznos a <code>C:=S(BS(BKS))(KK)</code> cserélő kombinátor:</p>
+
+<pre><code>Cabc = S(BS(BKS))(KK)abc
+     = BS(BKS)a(KKa)bc
+     = S(BKSa)(KKa)bc
+     = BKSab(KKab)c
+     = K(Sa)b(KKab)c
+     = Sa(KKab)c
+     = ac(KKabc)
+     = ac(Kbc)
+     = acb
+</code></pre>
+
+<h2>Fixpont-kombinátor</h2>
+
+<p>A fenti kombinátorok segítségével felírható a fixpont-kombinátor:</p>
+
+<pre><code>Y := S(CB(SII))(CB(SII))
+</code></pre>
+
+<p>Nézzük meg, milyen hatással van az argumentumára:</p>
+
+<pre><code>Ya = S(CB(SII))(CB(SII))a
+   = CB(SII)a(CB(SII)a)
+   = Ba(SII)(CB(SII)a)
+   = a(SII(CB(SII)a))
+   = a(I(CB(SII)a)(I(CB(SII)a)))
+   = a((CB(SII)a)(I(CB(SII)a)))
+   = a(CB(SII)a(CB(SII)a)
+   = a(Ya)
+</code></pre>
+
+<p>Ezt majd a rekurziónál fogjuk használni.</p>
+
+<h2>A kombinátorok képzése</h2>
+
+<p>Az <code>S</code> és <code>K</code> kombinátorok <em>bázist</em> alkotnak, tehát minden más kombinátor kifejezhető velük. Más kombinátorok <code>S</code>,<code>K</code>-alakra való átalakítását egy speciális számítógép gépi kódjára való fordításaként is felfoghatjuk.</p>
+
+<p>Egy többargumentumú kombinátor lefordítását úgy tehetjük meg, hogy az utolsó kivételével minden argumentumot konstansnak tekintünk, tehát pl. a <code>Wab=abba</code> kombinátor elkészítéséhez először egy <code>Vb=abba</code> operátort hozunk létre, amelyben az <code>a</code>-k konstansok. Ezt a <code>V:=C(SaI)a</code> kifejezés oldja meg (hogy ehhez hogyan jutottunk el, kiderül később):</p>
+
+<pre><code>Vb = C(SaI)ab
+   = SaIba
+   = ab(Ib)a
+   = abba
+</code></pre>
+
+<p>Ezután definiálunk egy <code>U</code> kombinátort úgy, hogy <code>Ua=V=C(SaI)a</code> teljesül - ezt az <code>S(BC(CSI))I</code> kifejezés oldja meg:</p>
+
+<pre><code>Uab = S(BC(CSI))Iab
+    = BC(CSI)a(Ia)b
+    = C(CSIa)(Ia)b
+    = CSIab(Ia)
+    = SaIb(Ia)
+    = ab(Ib)(Ia)
+    = abb(Ia)
+    = abba
+</code></pre>
+
+<p>Hogy ne kelljen mindig új kombinátornevekkel dolgozni, és könnyen le lehessen írni a kombinátorképzés módszerét, vezessük be a következő jelölést: <code>[Lx.a]</code> jelentse azt a kombinátoros kifejezést, amelyre igaz, hogy az <code>[Lx.e]a</code>-ből levezethető az <code>ê</code>, ami az <code>e</code> kifejezésnek egy olyan változata, amelyben minden <code>x</code>-et <code>a</code>-ra cseréltünk. Például <code>[Lx.axxa]=V=C(SaI)a</code>, mivel <code>Vb=abba</code>.</p>
+
+<p>Most már készen állunk arra, hogy megnézzük a fordítás egyes eseteit:</p>
+
+<ol>
+<li><code>[Lx.a]  = Ka</code> amikor <code>a</code> nem tartalmazza <code>x</code>-et</li>
+<li><code>[Lx.x]  = I</code></li>
+<li><code>[Lx.ab] = S[Lx.a][Lx.b]</code></li>
+</ol>
+
+<p>Ebből az első kettő triviális, hiszen <code>[Lx.a]b=Kab=a</code>, illetve <code>[Lx.x]a=Ia=a</code>, de a harmadik esetet érdemes közelebbről megvizsgálni:</p>
+
+<pre><code>[Lx.ab]c = S[Lx.a][Lx.b]c
+         = [Lx.a]c([Lx.b]c)
+         = ([Lx.a]c)([Lx.b]c)
+</code></pre>
+
+<p>Tehát egy <code>ab</code> alakú kifejezésben úgy tudjuk behelyettesíteni az <code>x</code> helyére a <code>c</code>-t, hogy ezt elvégezzük mind az <code>a</code>, mind a <code>b</code> részkifejezésre, és ezeket egymás mellé tesszük. Ez a rekurzív definíció értelmes, mivel az alapesetet, amikor az <code>a</code> vagy <code>b</code> kifejezések már nem bonthatóak tovább, az első két pont már lekezelte.</p>
+
+<p>Példaként térjünk vissza megint a <code>V</code> kombinátorhoz:</p>
+
+<pre><code>[Lx.axxa] = S[Lx.axx][Lx.a]
+          = S(S[Lx.ax][Lx.x])[Lx.a]
+          = S(S(S[Lx.a][Lx.x])[Lx.x])[Lx.a]
+          = S(S(S(Ka)[Lx.x])[Lx.x])[Lx.a]
+          = S(S(S(Ka)I)[Lx.x])[Lx.a]
+          = S(S(S(Ka)I)I)[Lx.a]
+          = S(S(S(Ka)I)I)(Ka)
+</code></pre>
+
+<p>A kifejezés tovább egyszerűsíthető az alábbi (könnyen igazolható) egyenlőségek használatával:</p>
+
+<ol>
+<li><code>S(Ka)I    = a</code></li>
+<li><code>S(Ka)(Kb) = K(ab)</code></li>
+<li><code>S(Ka)b    = Bab</code></li>
+<li><code>Sa(Kb)    = Cab</code></li>
+</ol>
+
+<p>Jelen esetben az 1. és 4. egyenlet miatt <code>[Lx.axxa] = S(SaI)(Ka) = C(SaI)a</code>.</p>
+
+<p>A továbbiakban az <code>[Lx.[Ly.e]]</code> helyett az <code>[Lxy.e]</code> jelölést használjuk (és hasonlóan <code>[Lxyz.e]</code> stb.), pl. <code>[Lxy.xyyx]=S(BC(CSI))I</code>.</p>
+
+<h2>Egypontos bázisok</h2>
+
+<p>Érdekes, hogy az <code>S</code> és <code>K</code> kifejezhetőek egyetlen kombinátorral is, amit így definiálhatunk:</p>
+
+<pre><code>Xa = aKSK
+</code></pre>
+
+<p>Ekkor a <code>K</code> levezetése:</p>
+
+<pre><code>XXX = XKSKX
+    = KKSKSKX
+    = KKSKX
+    = KKX
+    = K
+</code></pre>
+
+<p>Az <code>S</code> levezetése pedig:</p>
+
+<pre><code>X(XX) = XXKSK
+      = XKSKKSK
+      = KKSKSKKSK
+      = KKSKKSK
+      = KKKSK
+      = KSK
+      = S
+</code></pre>
+
+<p>Más egyedüli kombinátorral (<em>bázissal</em>) is elkészíthető az <code>S</code> és <code>K</code>, pl. legyen</p>
+
+<pre><code>Za = aSK
+</code></pre>
+
+<p>A <code>K</code> levezetése kicsit hosszabb:</p>
+
+<pre><code>Z(Z(ZZ)) = Z(Z(ZSK))
+         = Z(Z(SSKK))
+         = Z(Z(SK(KK)))
+         = Z(SK(KK))SK
+         = SK(KK)SKSK
+         = KS(KKS)KSK
+         = SKSK
+         = KK(SK)
+         = K
+</code></pre>
+
+<p>Az <code>S</code>-é viszont annál rövidebb:</p>
+
+<pre><code>Z(Z(Z(ZZ))) = ZK = KSK = S
+</code></pre>
+
+<p>(Itt érdemes azonban megjegyezni, hogy mivel az <code>S</code> és <code>K</code> tulajdonságait felhasználtuk a levezetésekben, az nem igaz, hogy az <code>Xa=a(XXX)(X(XX))(XXX)</code> ill. <code>Za=a(Z(Z(Z(ZZ))))(Z(Z(ZZ)))</code> képletekből minden levezethető lenne.)</p>
+
+<h1>Lambda-kalkulus</h1>
+
+<p>Egy lambda-kifejezés a következők egyike:</p>
+
+<ul>
+<li>egy változó (<code>x</code>, <code>y</code>, ...)</li>
+<li><code>(λx.M)</code>, ahol <code>x</code> változó, <code>M</code> pedig egy lambda-kifejezés</li>
+<li><code>(MN)</code>, ahol <code>M</code> és <code>N</code> lambda-kifejezések.</li>
+</ul>
+
+<p>A zárójeleket, ahol egyértelmű, itt is elhagyjuk, és <code>λx.(λy.M)</code> helyett a <code>λxy.M</code> alakot használjuk.</p>
+
+<p>A lambda-kifejezéseken értelmezett az ún. β-redukció:</p>
+
+<pre><code>(λx.M)a = M[x:=a],
+</code></pre>
+
+<p>ahol <code>M[x:=a]</code> megegyezik az <code>M</code>-mel, de az <code>x</code> változó összes előfordulása helyett <code>a</code> szerepel benne. Itt feltételezzük, hogy az <code>M</code>-en belüli, <code>λ</code>-val deklarált <code>x</code> nevű változókat átnevezzük, pl.</p>
+
+<pre><code>(λx.x(λx.yx))a = (x(λx.yx))[x:=a]
+               = (x(λz.yz))[x:=a]
+               = x(λz.yz)
+</code></pre>
+
+<p>A <code>(λx.M)</code> egy egyváltozós függvénynek felel meg, az <code>(MN)</code> kifejezés pedig a függvényapplikációnak, tehát pl. az <code>f(x)=2*x+1</code> függvény lambda-kifejezésként így írható fel:</p>
+
+<pre><code>λx.+(*2x)1
+</code></pre>
+
+<p>(Feltételezvén a számok és a számok közti műveletek megfelelő definícióját, ld. később.)</p>
+
+<p>A megfeleltetés a lambda-kalkulus és a kombinatorikus logika között nagyon egyszerű:</p>
+
+<pre><code>x      → x
+(λx.M) → [Lx.M]
+(MN)   → (MN)
+</code></pre>
+
+<p>A továbbiakban áttérünk a LISP programnyelv-féle jelölésre:</p>
+
+<pre><code>x      → x
+(λx.M) → (lambda (x) M)
+(MN)   → (M N)
+</code></pre>
+
+<p>A zárójeleket itt mindig megtartjuk, a többargumentumú függvényeknél pedig az argumentumokat szóközzel választjuk el, pl.:</p>
+
+<pre><code>(λxy.xyyz) → (lambda (x y) (((x y) y) z))
+</code></pre>
+
+<h1>Párok</h1>
+
+<p>Az igaz és hamis értékeket a következő módon definiálhatjuk:</p>
+
+<pre><code>T := (lambda (x y) x)
+F := (lambda (x y) y)
+</code></pre>
+
+<p>Ezzel a definícióval a predikátumok egyben elágazásként is használhatóak. Ha <code>p</code> értéke <code>T</code> vagy <code>F</code>, akkor <code>(p a b)</code> a <code>p</code> igazságértéke szerint választ az <code>a</code> és <code>b</code> kifejezések közül. Erre az átláthatóság kedvéért az <code>if</code> jelölést vezetjük be:</p>
+
+<pre><code>if := (lambda (p a b) (p a b))
+</code></pre>
+
+<p>Az igazságértékeken végzett műveletek is könnyen definiálhatóak, pl.:</p>
+
+<pre><code>not := (lambda (p) (if p F T))
+and := (lambda (p q) (if p q F))
+or  := (lambda (p q) (if p T q))
+</code></pre>
+
+<p>Hasonló trükkel adatszerkezeteket is definiálhatunk. A</p>
+
+<pre><code>cons := (lambda (m n) (lambda (z) (z m n)))
+</code></pre>
+
+<p>függvény egy, az <code>m</code> és <code>n</code> kifejezéseket tartalmazó párként fogható fel. A két tagot a</p>
+
+<pre><code>car := (lambda (p) (p T))
+cdr := (lambda (p) (p F))
+</code></pre>
+
+<p>függvényekkel lehet lekérdezni. Ellenőrzésképpen:</p>
+
+<pre><code>(car (cons x y)) = (car ((lambda (m n) (lambda (z) (z m n))) x y))
+                 = (car (lambda (z) (z x y)))
+                 = ((lambda (p) (p T)) (lambda (z) (z x y)))
+                 = ((lambda (z) (z x y)) T)
+                 = (T x y)
+                 = x
+</code></pre>
+
+<h1>Számok</h1>
+
+<p>Definiáljuk a természetes számokat! Legyen</p>
+
+<pre><code>0 := (lambda (x) x)
+1 := (cons F 0)
+2 := (cons F 1)
+...
+</code></pre>
+
+<p>Ekkor az egyet hozzáadó ill. levonó függvények nyilvánvalóan</p>
+
+<pre><code>+1 := (lambda (n) (cons F n))
+-1 := cdr
+</code></pre>
+
+<p>Érdemes megfigyelni, hogy <code>(-1 0)=F</code>. Egy számról a</p>
+
+<pre><code>zerop := car
+</code></pre>
+
+<p>függvény dönti el, hogy <code>0</code>-e (<code>0</code>-ra <code>T</code>, más számra <code>F</code>).</p>
+
+<p>Az összeadáshoz, szorzáshoz már rekurzió kell, ezekre majd később visszatérünk.</p>
+
+<h1>Változók</h1>
+
+<p>Vezessük be a</p>
+
+<pre><code>((lambda (x) (+1 x)) 1) = (+1 x)[x := 1]
+</code></pre>
+
+<p>kifejezésre az alábbi jelölést:</p>
+
+<pre><code>(let ((x 1))
+  (+1 x))
+</code></pre>
+
+<p>Több argumentum esetén</p>
+
+<pre><code>((lambda (x y) (cons x (cons y 3))) 1 2) = (cons x (cons y 3))[x := 1, y := 2]
+</code></pre>
+
+<p>helyett azt írjuk, hogy</p>
+
+<pre><code>(let ((x 1)
+      (y 2))
+  (cons x (cons y 3)))
+</code></pre>
+
+<p>Ez a jelölés jobban mutatja, hogy mi történik: lokális változókat definiálunk, amelyeket aztán a <code>let</code> <em>blokk</em> belsejében felhasználunk.</p>
+
+<h1>Rekurzió</h1>
+
+<p>Rekurzióhoz, tehát hogy egy függvény önmagára tudjon hivatkozni, az <code>Y</code> fixpont-kombinátort fogjuk használni. Az aktuális jelöléseinkkel ez</p>
+
+<pre><code>Y := (lambda (f)
+       (let ((g (lambda (x) (f (x x)))))
+         (g g)))
+</code></pre>
+
+<p>Ellenőrzés:</p>
+
+<pre><code>(Y f) = ((lambda (x) (f (x x))) (lambda (x) (f (x x))))
+      = (f ((lambda (x) (f (x x))) (lambda (x) (f (x x)))))
+      = (f (Y f))
+</code></pre>
+
+<p>Példaként definiáljuk az összeadást:</p>
+
+<pre><code>plus := (lambda (f)
+          (lambda (x y)
+            (if (zerop x)
+                y
+                (f (-1 x) (+1 y)))))
++    := (Y plus)
+</code></pre>
+
+<p>Nézzük meg, ez mit csinál!</p>
+
+<pre><code>(+ a b) = ((Y plus) a b)
+        = ((plus (Y plus)) a b)
+        = ((lambda (x y)
+             (if (zerop x)
+                 y
+                 ((Y plus) (-1 x) (+1 y))))
+           a b)
+        = (if (zerop a)
+              b
+              ((Y plus) (-1 a) (+1 b)))
+        = (if (zerop a)
+              b
+              ((plus (Y plus)) (-1 a) (+1 b)))
+        = ...
+</code></pre>
+
+<p>Innen már látszik, hogy beindul a rekurzió. Azonban az is látszik, hogy ahhoz, hogy ez működjön, jól kell megválasztani, hogy mit fejtünki ki, ugyanis pl. megtehetnénk, hogy folyton csak az <code>Y</code> definícióját alkalmazzuk, és ez a levezetés sosem fog leállni.</p>
+
+<h2>Lusta és szigorú kiértékelés</h2>
+
+<p>Az <code>Y</code> fenti definíciója csak ún. <em>lusta kiértékelés</em> esetén működik, amikor egy-egy kifejezést csak akkor értékelünk ki, amikor már fel akarjuk használni. A <em>szigorú kiértékelesnél</em> azonban egy függvény kiértékelése előtt először mindig kiértékeljük az összes argumentumot. Szerencsére emellett a kiértékelési mód mellett is adható egy működő definíció az <code>Y</code> kombinátorra:</p>
+
+<pre><code>Y := (lambda (f)
+       ((lambda (x) (f (lambda (y) ((x x) y))))
+        (lambda (x) (f (lambda (y) ((x x) y))))))
+</code></pre>
+
+<p>Ellenőrizzük:</p>
+
+<pre><code>(Y f) = ((lambda (x) (f (lambda (y) ((x x) y))))
+         (lambda (x) (f (lambda (y) ((x x) y))))))
+      = (f (lambda (y)
+             (((lambda (x) (f (lambda (y) ((x x) y))))
+               (lambda (x) (f (lambda (y) ((x x) y)))))
+              y)))
+      = (f (lambda (y) ((Y f) y)))
+</code></pre>
+
+<p>A trükk tehát az, hogy egy belső <code>lambda</code>-val késlelteti a kiértékelést. Ennek a belső  <code>lambda</code>-nak annyi paramétere kell legyen, mint a rekurzív függvénynek.</p>
+
+<p>Példaként nézzük meg az új <code>Y</code> kombinátorral a fenti levezetést:</p>
+
+<pre><code>(+ a b) = ((Y plus) a b)
+        = ((plus (lambda (y1 y2) ((Y plus) y1 y2))) a b)
+        = ((lambda (x y)
+             (if (zerop x)
+                 y
+                 ((lambda (y1 y2) ((Y plus) y1 y2)) (-1 x) (+1 y))))
+           a b)
+        = (if (zerop a)
+              b
+              ((lambda (y1 y2) ((Y plus) y1 y2)) (-1 a) (+1 b)))
+        = (if (zerop a)
+              b
+              ((Y plus) (-1 a) (+1 b)))
+        = (if (zerop a)
+              b
+              ((plus (lambda (y1 y2) ((Y plus) y1 y2))) (-1 a) (+1 b)))
+</code></pre>
+
+<p>Innen megint látszik már a rekurzió, és ezúttal nem lehetett végtelen a kiértékelés... vagy mégis? A szemfüles olvasó biztosan észrevette, hogy ahhoz, hogy ez jól működjön, az <code>if</code> kiértékelése lusta kell legyen, tehát csak az elágazási feltételnek megfelelő ágat szabad kiértékelje.</p>
+
+<h2>További példák</h2>
+
+<p>Az egyszerűség kedvéért a rekurzív függvényeknél az <code>Y</code> kombinátort nem fogjuk explicit módon kiírni, hanem a függvény saját nevére való hivatkozás fogja implicit jelezni, pl.:</p>
+
+<pre><code>+ := (lambda (x y)
+       (if (zerop x)
+           y
+           (+ (-1 x) (+1 y))))
+</code></pre>
+
+<p>És:</p>
+
+<pre><code>= := (lambda (x y)
+       (or (and (zerop x) (zerop y))
+           (and (not (zerop x))
+                (and (not (zerop y))
+                     (= (-1 x) (-1 y))))))
+</code></pre>
+
+<p>A <code>let</code>-tel definiált változókban is alkalmazhatunk rekurzív függvényeket, pl.:</p>
+
+<pre><code>(let ((fact (lambda (n)
+              (if (zerop n)
+                  1
+                  (* n (fact (-1 n)))))))
+  (fact 10))
+</code></pre>
+
+<p>A szorzás definíciójában ki is használjuk ezt:</p>
+
+<pre><code>* := (lambda (x y)
+       (let ((rec (lambda (n result)
+                    (if (zerop n)
+                        result
+                        (rec (-1 n) (+ result y))))))
+         (rec x 0)))
+</code></pre>
+
+<h1>Hogyan tovább?</h1>
+
+<p>Érdemes bevezetni a</p>
+
+<pre><code>(define (foo x y) &lt;...&gt;) = (let ((foo (lambda (x y) &lt;...&gt;))) ... )
+(define bar z)           = (let ((bar z)) ... )
+</code></pre>
+
+<p>jelölést egy képzeletbeli, az egész programunkat körülölelő külső <code>let</code>-ben való definíciókra. Ezzel globális változókat ill. függvényeket tudunk készíteni.</p>
+
+<p>A párok láncolásából listát készíthetünk, valamilyen jól megkülönböztethető záróelemmel:</p>
+
+<pre><code>(cons x (cons y (cons z . NIL))) ~ [x,y,z]
+</code></pre>
+
+<p>Egy logikus következő lépés a típusok hozzáadása. Erre egy egyszerű módszer, hogy kizárólag párokkal dolgozunk, és a párok első eleme egy szám, ami a típust reprezentálja (pl. 0 = NIL, 1 = igazságérték, 2 = természetes szám, 3 = egész szám, 4 = valós szám, 5 = karakter, 6 = pár, 7 = függvény stb.), a második pedig a tényleges adat. Minden típushoz lehet rendelni felismerő-függvényt, pl.:</p>
+
+<pre><code>(define (naturalp n) (= (car n) 2))
+</code></pre>
+
+<p>A típusos számok szorzására definiálható a</p>
+
+<pre><code>(define (nat* x y) (cons 2 (* (cdr x) (cdr y))))
+</code></pre>
+
+<p>függvény stb. Típusellenőrzésekre is szükség lesz.</p>
+
+<p>Végül lehetne metaprogramozást beletenni: olyan függvényeket, melyek eredménye egy függvény definíciója...</p>
+
+<h1>Bibliográfia</h1>
+
+<ol>
+<li>Ch. Hankin, <em>An Introduction to Lambda Calculi for Computer Scientists</em>, King's College Publications, 2004.</li>
+<li>J. R. Hindley, J. P. Seldin, <em>Lambda-Calculus and Combinators - An Introduction</em>, Cambridge University Press, 2008.</li>
+<li>H. Abelson, G. J. Sussman, <em>Structure and Interpretation of Computer Programs</em>, MIT Press, 1996.</li>
+<li>S. P. Jones, <em>The Implementation of Functional Programming Languages</em>, Prentice Hall, 1987.</li>
+<li>C. Queinnec, <em>Lisp in Small Pieces</em>, Cambridge University Press, 2003.</li>
+</ol>
+</body>
+</html>
+
