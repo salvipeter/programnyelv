@@ -7,7 +7,7 @@ Ebben a dokumentumban egy egyszerű funkcionális programnyelv készítését mu
 Kombinátorok
 ============
 
-Definiáljuk a `K` és `S` kombinátorokat:
+Definiáljuk a `K` és `S` kombinátorokat az alábbi módon:
 
     Kab  = a
     Sabc = Sac(bc)
@@ -427,7 +427,7 @@ jelölést egy képzeletbeli, az egész programunkat körülölelő külső `let
 
 A párok láncolásából listát készíthetünk, valamilyen jól megkülönböztethető záróelemmel:
 
-    (cons x (cons y (cons z . NIL))) ~ [x,y,z]
+    (cons x (cons y (cons z NIL))) ~ [x,y,z]
 
 Egy logikus következő lépés a típusok hozzáadása. Erre egy egyszerű módszer, hogy kizárólag párokkal dolgozunk, és a párok első eleme egy szám, ami a típust reprezentálja (pl. 0 = NIL, 1 = igazságérték, 2 = természetes szám, 3 = egész szám, 4 = valós szám, 5 = karakter, 6 = pár, 7 = függvény stb.), a második pedig a tényleges adat. Minden típushoz lehet rendelni felismerő-függvényt, pl.:
 

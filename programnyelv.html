@@ -14,7 +14,7 @@
 
 <h1>Kombinátorok</h1>
 
-<p>Definiáljuk a <code>K</code> és <code>S</code> kombinátorokat:</p>
+<p>Definiáljuk a <code>K</code> és <code>S</code> kombinátorokat az alábbi módon:</p>
 
 <pre><code>Kab  = a
 Sabc = Sac(bc)
@@ -477,7 +477,7 @@ cdr := (lambda (p) (p F))
 
 <p>A párok láncolásából listát készíthetünk, valamilyen jól megkülönböztethető záróelemmel:</p>
 
-<pre><code>(cons x (cons y (cons z . NIL))) ~ [x,y,z]
+<pre><code>(cons x (cons y (cons z NIL))) ~ [x,y,z]
 </code></pre>
 
 <p>Egy logikus következő lépés a típusok hozzáadása. Erre egy egyszerű módszer, hogy kizárólag párokkal dolgozunk, és a párok első eleme egy szám, ami a típust reprezentálja (pl. 0 = NIL, 1 = igazságérték, 2 = természetes szám, 3 = egész szám, 4 = valós szám, 5 = karakter, 6 = pár, 7 = függvény stb.), a második pedig a tényleges adat. Minden típushoz lehet rendelni felismerő-függvényt, pl.:</p>
