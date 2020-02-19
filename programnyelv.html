@@ -17,7 +17,7 @@
 <p>Definiáljuk a <code>K</code> és <code>S</code> kombinátorokat az alábbi módon:</p>
 
 <pre><code>Kab  = a
-Sabc = Sac(bc)
+Sabc = ac(bc)
 </code></pre>
 
 <p>Itt a kis <code>a</code>, <code>b</code>, <code>c</code> stb. betűk tetszőleges kifejezéseket jelentenek. Ahol nincsen külön jelezve, ott a zárójelezés balról történik, tehát <code>abcd=((ab)c)d</code>. A fenti egyenlőségek értelme az, hogy a két oldalon található kifejezések felcserélhetőek.</p>
@@ -79,17 +79,17 @@ Sabc = Sac(bc)
 
 <p>Az <code>S</code> és <code>K</code> kombinátorok <em>bázist</em> alkotnak, tehát minden más kombinátor kifejezhető velük. Más kombinátorok <code>S</code>,<code>K</code>-alakra való átalakítását egy speciális számítógép gépi kódjára való fordításaként is felfoghatjuk.</p>
 
-<p>Egy többargumentumú kombinátor lefordítását úgy tehetjük meg, hogy az utolsó kivételével minden argumentumot konstansnak tekintünk, tehát pl. a <code>Wab=abba</code> kombinátor elkészítéséhez először egy <code>Vb=abba</code> operátort hozunk létre, amelyben az <code>a</code>-k konstansok. Ezt a <code>V:=C(SaI)a</code> kifejezés oldja meg (hogy ehhez hogyan jutottunk el, kiderül később):</p>
+<p>Egy többargumentumú kombinátor lefordítását úgy tehetjük meg, hogy az utolsó kivételével minden argumentumot konstansnak tekintünk, tehát pl. a <code>Tab=abba</code> kombinátor elkészítéséhez először egy <code>Ub=abba</code> operátort hozunk létre, amelyben az <code>a</code>-k konstansok. Ezt a <code>U:=C(SaI)a</code> kifejezés oldja meg (hogy ehhez hogyan jutottunk el, kiderül később):</p>
 
-<pre><code>Vb = C(SaI)ab
+<pre><code>Ub = C(SaI)ab
    = SaIba
    = ab(Ib)a
    = abba
 </code></pre>
 
-<p>Ezután definiálunk egy <code>U</code> kombinátort úgy, hogy <code>Ua=V=C(SaI)a</code> teljesül - ezt az <code>S(BC(CSI))I</code> kifejezés oldja meg:</p>
+<p>Ezután definiálunk egy <code>V</code> kombinátort úgy, hogy <code>Va=U=C(SaI)a</code> teljesül - ezt az <code>S(BC(CSI))I</code> kifejezés oldja meg:</p>
 
-<pre><code>Uab = S(BC(CSI))Iab
+<pre><code>Vab = S(BC(CSI))Iab
     = BC(CSI)a(Ia)b
     = C(CSIa)(Ia)b
     = CSIab(Ia)
@@ -99,7 +99,7 @@ Sabc = Sac(bc)
     = abba
 </code></pre>
 
-<p>Hogy ne kelljen mindig új kombinátornevekkel dolgozni, és könnyen le lehessen írni a kombinátorképzés módszerét, vezessük be a következő jelölést: <code>[Lx.a]</code> jelentse azt a kombinátoros kifejezést, amelyre igaz, hogy az <code>[Lx.e]a</code>-ből levezethető az <code>ê</code>, ami az <code>e</code> kifejezésnek egy olyan változata, amelyben minden <code>x</code>-et <code>a</code>-ra cseréltünk. Például <code>[Lx.axxa]=V=C(SaI)a</code>, mivel <code>Vb=abba</code>.</p>
+<p>Hogy ne kelljen mindig új kombinátornevekkel dolgozni, és könnyen le lehessen írni a kombinátorképzés módszerét, vezessük be a következő jelölést: <code>[Lx.a]</code> jelentse azt a kombinátoros kifejezést, amelyre igaz, hogy az <code>[Lx.e]a</code>-ből levezethető az <code>ê</code>, ami az <code>e</code> kifejezésnek egy olyan változata, amelyben minden <code>x</code>-et <code>a</code>-ra cseréltünk. Például <code>[Lx.axxa]=U=C(SaI)a</code>, mivel <code>Ub=abba</code>.</p>
 
 <p>Most már készen állunk arra, hogy megnézzük a fordítás egyes eseteit:</p>
 
@@ -118,7 +118,7 @@ Sabc = Sac(bc)
 
 <p>Tehát egy <code>ab</code> alakú kifejezésben úgy tudjuk behelyettesíteni az <code>x</code> helyére a <code>c</code>-t, hogy ezt elvégezzük mind az <code>a</code>, mind a <code>b</code> részkifejezésre, és ezeket egymás mellé tesszük. Ez a rekurzív definíció értelmes, mivel az alapesetet, amikor az <code>a</code> vagy <code>b</code> kifejezések már nem bonthatóak tovább, az első két pont már lekezelte.</p>
 
-<p>Példaként térjünk vissza megint a <code>V</code> kombinátorhoz:</p>
+<p>Példaként térjünk vissza megint az <code>U</code> kombinátorhoz:</p>
 
 <pre><code>[Lx.axxa] = S[Lx.axx][Lx.a]
           = S(S[Lx.ax][Lx.x])[Lx.a]

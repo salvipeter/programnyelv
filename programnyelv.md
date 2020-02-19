@@ -10,7 +10,7 @@ Kombinátorok
 Definiáljuk a `K` és `S` kombinátorokat az alábbi módon:
 
     Kab  = a
-    Sabc = Sac(bc)
+    Sabc = ac(bc)
 
 Itt a kis `a`, `b`, `c` stb. betűk tetszőleges kifejezéseket jelentenek. Ahol nincsen külön jelezve, ott a zárójelezés balról történik, tehát `abcd=((ab)c)d`. A fenti egyenlőségek értelme az, hogy a két oldalon található kifejezések felcserélhetőek.
 
@@ -68,16 +68,16 @@ A kombinátorok képzése
 ----------------------
 Az `S` és `K` kombinátorok *bázist* alkotnak, tehát minden más kombinátor kifejezhető velük. Más kombinátorok `S`,`K`-alakra való átalakítását egy speciális számítógép gépi kódjára való fordításaként is felfoghatjuk.
 
-Egy többargumentumú kombinátor lefordítását úgy tehetjük meg, hogy az utolsó kivételével minden argumentumot konstansnak tekintünk, tehát pl. a `Wab=abba` kombinátor elkészítéséhez először egy `Vb=abba` operátort hozunk létre, amelyben az `a`-k konstansok. Ezt a `V:=C(SaI)a` kifejezés oldja meg (hogy ehhez hogyan jutottunk el, kiderül később):
+Egy többargumentumú kombinátor lefordítását úgy tehetjük meg, hogy az utolsó kivételével minden argumentumot konstansnak tekintünk, tehát pl. a `Tab=abba` kombinátor elkészítéséhez először egy `Ub=abba` operátort hozunk létre, amelyben az `a`-k konstansok. Ezt a `U:=C(SaI)a` kifejezés oldja meg (hogy ehhez hogyan jutottunk el, kiderül később):
 
-    Vb = C(SaI)ab
+    Ub = C(SaI)ab
        = SaIba
        = ab(Ib)a
        = abba
 
-Ezután definiálunk egy `U` kombinátort úgy, hogy `Ua=V=C(SaI)a` teljesül - ezt az `S(BC(CSI))I` kifejezés oldja meg:
+Ezután definiálunk egy `V` kombinátort úgy, hogy `Va=U=C(SaI)a` teljesül - ezt az `S(BC(CSI))I` kifejezés oldja meg:
 
-    Uab = S(BC(CSI))Iab
+    Vab = S(BC(CSI))Iab
         = BC(CSI)a(Ia)b
         = C(CSIa)(Ia)b
         = CSIab(Ia)
@@ -86,7 +86,7 @@ Ezután definiálunk egy `U` kombinátort úgy, hogy `Ua=V=C(SaI)a` teljesül - 
         = abb(Ia)
         = abba
 
-Hogy ne kelljen mindig új kombinátornevekkel dolgozni, és könnyen le lehessen írni a kombinátorképzés módszerét, vezessük be a következő jelölést: `[Lx.a]` jelentse azt a kombinátoros kifejezést, amelyre igaz, hogy az `[Lx.e]a`-ből levezethető az `ê`, ami az `e` kifejezésnek egy olyan változata, amelyben minden `x`-et `a`-ra cseréltünk. Például `[Lx.axxa]=V=C(SaI)a`, mivel `Vb=abba`.
+Hogy ne kelljen mindig új kombinátornevekkel dolgozni, és könnyen le lehessen írni a kombinátorképzés módszerét, vezessük be a következő jelölést: `[Lx.a]` jelentse azt a kombinátoros kifejezést, amelyre igaz, hogy az `[Lx.e]a`-ből levezethető az `ê`, ami az `e` kifejezésnek egy olyan változata, amelyben minden `x`-et `a`-ra cseréltünk. Például `[Lx.axxa]=U=C(SaI)a`, mivel `Ub=abba`.
 
 Most már készen állunk arra, hogy megnézzük a fordítás egyes eseteit:
 
@@ -102,7 +102,7 @@ Ebből az első kettő triviális, hiszen `[Lx.a]b=Kab=a`, illetve `[Lx.x]a=Ia=a
 
 Tehát egy `ab` alakú kifejezésben úgy tudjuk behelyettesíteni az `x` helyére a `c`-t, hogy ezt elvégezzük mind az `a`, mind a `b` részkifejezésre, és ezeket egymás mellé tesszük. Ez a rekurzív definíció értelmes, mivel az alapesetet, amikor az `a` vagy `b` kifejezések már nem bonthatóak tovább, az első két pont már lekezelte.
 
-Példaként térjünk vissza megint a `V` kombinátorhoz:
+Példaként térjünk vissza megint az `U` kombinátorhoz:
 
     [Lx.axxa] = S[Lx.axx][Lx.a]
               = S(S[Lx.ax][Lx.x])[Lx.a]
