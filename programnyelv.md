@@ -59,7 +59,7 @@ Nézzük meg, milyen hatással van az argumentumára:
        = a(SII(CB(SII)a))
        = a(I(CB(SII)a)(I(CB(SII)a)))
        = a((CB(SII)a)(I(CB(SII)a)))
-       = a(CB(SII)a(CB(SII)a)
+       = a(CB(SII)a(CB(SII)a))
        = a(Ya)
 
 Ezt majd a rekurziónál fogjuk használni.
@@ -188,7 +188,7 @@ ahol `M[x:=a]` megegyezik az `M`-mel, de az `x` változó összes előfordulása
 
     (λx.x(λx.yx))a = (x(λx.yx))[x:=a]
                    = (x(λz.yz))[x:=a]
-                   = x(λz.yz)
+                   = a(λz.yz)
 
 A `(λx.M)` egy egyváltozós függvénynek felel meg, az `(MN)` kifejezés pedig a függvényapplikációnak, tehát pl. az `f(x)=2*x+1` függvény lambda-kifejezésként így írható fel:
 
@@ -336,7 +336,7 @@ Nézzük meg, ez mit csinál!
                   ((plus (Y plus)) (-1 a) (+1 b)))
             = ...
 
-Innen már látszik, hogy beindul a rekurzió. Azonban az is látszik, hogy ahhoz, hogy ez működjön, jól kell megválasztani, hogy mit fejtünki ki, ugyanis pl. megtehetnénk, hogy folyton csak az `Y` definícióját alkalmazzuk, és ez a levezetés sosem fog leállni.
+Innen már látszik, hogy beindul a rekurzió. Azonban az is látszik, hogy ahhoz, hogy ez működjön, jól kell megválasztani, hogy mit fejtünk ki, ugyanis pl. megtehetnénk, hogy folyton csak az `Y` definícióját alkalmazzuk, és ez a levezetés sosem fog leállni.
 
 Lusta és szigorú kiértékelés
 ----------------------------
@@ -350,7 +350,7 @@ Az `Y` fenti definíciója csak ún. *lusta kiértékelés* esetén működik, a
 Ellenőrizzük:
 
     (Y f) = ((lambda (x) (f (lambda (y) ((x x) y))))
-             (lambda (x) (f (lambda (y) ((x x) y))))))
+             (lambda (x) (f (lambda (y) ((x x) y)))))
           = (f (lambda (y)
                  (((lambda (x) (f (lambda (y) ((x x) y))))
                    (lambda (x) (f (lambda (y) ((x x) y)))))

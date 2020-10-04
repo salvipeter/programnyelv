@@ -69,7 +69,7 @@ Sabc = ac(bc)
    = a(SII(CB(SII)a))
    = a(I(CB(SII)a)(I(CB(SII)a)))
    = a((CB(SII)a)(I(CB(SII)a)))
-   = a(CB(SII)a(CB(SII)a)
+   = a(CB(SII)a(CB(SII)a))
    = a(Ya)
 </code></pre>
 
@@ -215,7 +215,7 @@ Sabc = ac(bc)
 
 <pre><code>(λx.x(λx.yx))a = (x(λx.yx))[x:=a]
                = (x(λz.yz))[x:=a]
-               = x(λz.yz)
+               = a(λz.yz)
 </code></pre>
 
 <p>A <code>(λx.M)</code> egy egyváltozós függvénynek felel meg, az <code>(MN)</code> kifejezés pedig a függvényapplikációnak, tehát pl. az <code>f(x)=2*x+1</code> függvény lambda-kifejezésként így írható fel:</p>
@@ -381,7 +381,7 @@ cdr := (lambda (p) (p F))
         = ...
 </code></pre>
 
-<p>Innen már látszik, hogy beindul a rekurzió. Azonban az is látszik, hogy ahhoz, hogy ez működjön, jól kell megválasztani, hogy mit fejtünki ki, ugyanis pl. megtehetnénk, hogy folyton csak az <code>Y</code> definícióját alkalmazzuk, és ez a levezetés sosem fog leállni.</p>
+<p>Innen már látszik, hogy beindul a rekurzió. Azonban az is látszik, hogy ahhoz, hogy ez működjön, jól kell megválasztani, hogy mit fejtünk ki, ugyanis pl. megtehetnénk, hogy folyton csak az <code>Y</code> definícióját alkalmazzuk, és ez a levezetés sosem fog leállni.</p>
 
 <h2>Lusta és szigorú kiértékelés</h2>
 
@@ -395,7 +395,7 @@ cdr := (lambda (p) (p F))
 <p>Ellenőrizzük:</p>
 
 <pre><code>(Y f) = ((lambda (x) (f (lambda (y) ((x x) y))))
-         (lambda (x) (f (lambda (y) ((x x) y))))))
+         (lambda (x) (f (lambda (y) ((x x) y)))))
       = (f (lambda (y)
              (((lambda (x) (f (lambda (y) ((x x) y))))
                (lambda (x) (f (lambda (y) ((x x) y)))))
