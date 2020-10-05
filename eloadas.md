@@ -40,6 +40,7 @@ Tartalom
 
 
 Kombinatorikus logika
+  [Schönfinkel, 1924 / Curry, 1927]
 
     <exp> ::= K | S | (<exp><exp>)
 
@@ -173,7 +174,7 @@ Hasonlóan a `Za = aSK` kombinátorral
 ... de az `S` és `K` szabályokra szükség van
 
 
-Lambda-kalkulus
+Lambda-kalkulus [Church, 1936]
 
     <exp> ::= <var> | (λx.<exp>) | (<exp><exp>)
     <var> ::= x | y | ...
@@ -441,7 +442,7 @@ Típusok (pl. pár első eleme):
       (cons 2 (* (cdr x) (cdr y))))
 
 
-Ajánlott olvasmányok
+Ajánlott irodalom
 
 http://salvi.chaosnet.org/texts/programnyelv.html
 

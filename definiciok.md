@@ -27,3 +27,7 @@
 
     Txy = x   Fxy = y
     CONSxyz = zxy  CARx = xT  CDRx = xF
+
+
+    K(SS)(K(SK)K)K => (((K(SS))((K(SK))K))K)
+                   => ```K`SS``K`SKKK
