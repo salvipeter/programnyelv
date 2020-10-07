@@ -58,7 +58,7 @@ Nézzük meg, milyen hatással van az argumentumára:
        = Ba(SII)(CB(SII)a)
        = a(SII(CB(SII)a))
        = a(I(CB(SII)a)(I(CB(SII)a)))
-       = a((CB(SII)a)(I(CB(SII)a)))
+       = a(CB(SII)a(I(CB(SII)a)))
        = a(CB(SII)a(CB(SII)a))
        = a(Ya)
 
@@ -77,16 +77,15 @@ Egy többargumentumú kombinátor lefordítását úgy tehetjük meg, hogy az ut
 
 Ezután definiálunk egy `V` kombinátort úgy, hogy `Va=U=C(SaI)a` teljesül - ezt az `S(BC(CSI))I` kifejezés oldja meg:
 
-    Vab = S(BC(CSI))Iab
-        = BC(CSI)a(Ia)b
-        = C(CSIa)(Ia)b
-        = CSIab(Ia)
-        = SaIb(Ia)
-        = ab(Ib)(Ia)
-        = abb(Ia)
-        = abba
+    Va = S(BC(CSI))Ia
+       = BC(CSI)a(Ia)
+       = C(CSIa)(Ia)
+       = C(SaI)(Ia)
+       = C(SaI)a
 
-Hogy ne kelljen mindig új kombinátornevekkel dolgozni, és könnyen le lehessen írni a kombinátorképzés módszerét, vezessük be a következő jelölést: `[Lx.a]` jelentse azt a kombinátoros kifejezést, amelyre igaz, hogy az `[Lx.e]a`-ből levezethető az `ê`, ami az `e` kifejezésnek egy olyan változata, amelyben minden `x`-et `a`-ra cseréltünk. Például `[Lx.axxa]=U=C(SaI)a`, mivel `Ub=abba`.
+Innen már látszik, hogy `Vab=Ub=abba` az a kombinátor, amit kerestünk.
+
+Hogy ne kelljen mindig új kombinátornevekkel dolgozni, és könnyen le lehessen írni a kombinátorképzés módszerét, vezessük be a következő jelölést: `[Lx.e]` jelentse azt a kombinátoros kifejezést, amelyre igaz, hogy az `[Lx.e]a`-ből levezethető az `ê`, ami az `e` kifejezésnek egy olyan változata, amelyben minden `x`-et `a`-ra cseréltünk. Például `[Lx.axxa]=U=C(SaI)a`, mivel `Ub=abba`.
 
 Most már készen állunk arra, hogy megnézzük a fordítás egyes eseteit:
 
@@ -441,9 +440,10 @@ függvény stb. Típusellenőrzésekre is szükség lesz.
 
 Végül lehetne metaprogramozást beletenni: olyan függvényeket, melyek eredménye egy függvény definíciója...
 
-Bibliográfia
-============
+Ajánlott irodalom
+=================
 
+0. R. Smullyan, *To Mock a Mockingbird and Other Logic Puzzles Including an Amazing Adventure in Combinatory Logic*, Alfred A. Knopf, 1985. [*A csúfolórigó nyomában - Egy lebilincselő kaland a kombinatorikus logika világában*, Typotex, 2012.]
 1. Ch. Hankin, *An Introduction to Lambda Calculi for Computer Scientists*, King's College Publications, 2004.
 2. J. R. Hindley, J. P. Seldin, *Lambda-Calculus and Combinators - An Introduction*, Cambridge University Press, 2008.
 3. H. Abelson, G. J. Sussman, *Structure and Interpretation of Computer Programs*, MIT Press, 1996.

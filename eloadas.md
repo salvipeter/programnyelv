@@ -87,7 +87,7 @@ Ebből:
        = Ba(SII)(CB(SII)a)
        = a(SII(CB(SII)a))
        = a(I(CB(SII)a)(I(CB(SII)a)))
-       = a((CB(SII)a)(I(CB(SII)a)))
+       = a(CB(SII)a(I(CB(SII)a)))
        = a(CB(SII)a(CB(SII)a))
        = a(Ya)
 
@@ -107,14 +107,14 @@ Pl. `Tab = abba` kombinátorhoz először `Ub = abba`
 Ezután `Va = U = C(SaI)a` kombinátort keresünk
 
     V := S(BC(CSI))I
-    Vab = S(BC(CSI))Iab = BC(CSI)a(Ia)b
-        = C(CSIa)(Ia)b  = CSIab(Ia) = SaIb(Ia)
-        = ab(Ib)(Ia)    = abb(Ia)   = abba
+    Va = S(BC(CSI))Ia = BC(CSI)a(Ia)
+       = C(CSIa)(Ia)  = C(SaI)a
+    => Vab = Ub = abba
 
 
 Kombinátorok képzése II - szabályok
 
-Jelölés: `[Lx.a]`
+Jelölés: `[Lx.e]`
 - `[Lx.e]a`-ból levezethető egy `ê` kifejezés,
   ami az `e` egy változata, de `x`-ek helyett `a`
 - Pl. `[Lx.axxa] = U = C(SaI)a`, mivel `Ub = abba`
