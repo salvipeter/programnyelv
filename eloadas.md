@@ -446,8 +446,9 @@ Ajánlott irodalom
 
 http://salvi.chaosnet.org/texts/programnyelv.html
 
-1. The Unlambda Programming Language
+1. The Unlambda, Iota & Jot Programming Languages
    http://www.madore.org/~david/programs/unlambda/
+   http://www.nyu.edu/projects/barker/Iota/
 
 2. R. Smullyan (1985): To Mock a Mockingbird
    [A csúfolórigó nyomában - Typotex, 2012]
